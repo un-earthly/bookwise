@@ -7,10 +7,7 @@ export default function Register() {
     const [contact, setContact] = useState('');
 
     const handleRegister = () => {
-        // Implement the logic to register the user with the provided details
-        console.log('Registering user:', { username, email, password, contact });
-        // You can use an authentication library or call your backend API here for user registration
-    };
+        console.log('Registering user:', { username, email, password, contact }); };
 
     return (
         <div className="min-h-screen hero-content flex-col">
