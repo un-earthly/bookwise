@@ -3,6 +3,7 @@ import LandingPage from "../pages/LandingPage";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Wishlist from "../pages/Wishlist";
+import AllBooksPage from "../pages/AllBooks";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
     {
         path: "/wishlist",
         element: <Wishlist />,
+
+    },
+    {
+        path: "/all-books",
+        element: <AllBooksPage />,
 
     },
 ]);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IBook } from '../interface/book.interface';
 import UserLayout from '../layouts/UserLayout';
+import BookCard from '../components/BookCard';
 
 const Wishlist: React.FC = () => {
     const [wishlist, setWishlist] = useState<IBook[]>([]);
@@ -31,14 +32,7 @@ const Wishlist: React.FC = () => {
             <div className="p-4">
                 <h1 className="text-2xl font-bold mb-4">My Wishlist</h1>
                 <ul className="space-y-4">
-                    {wishlist.map((book) => (
-                        <li key={book.id} className="bg-white p-4 rounded-lg shadow-md">
-                            <h2 className="text-lg font-bold">{book.title}</h2>
-                            <p>Author: {book.author}</p>
-                            <p>Genre: {book.genre}</p>
-                            <p>Publication Date: {book.publicationDate}</p>
-                        </li>
-                    ))}
+                    {wishlist.map((book) => <BookCard book={book} key={book._id} />)}
                 </ul>
             </div>
         </UserLayout >
