@@ -1,3 +1,8 @@
+import React from "react"
+import { IBook } from "../interface/book.interface";
+type Props = {
+    book: IBook
+}
 const BookCard: React.FC<Props> = ({ book }) => {
     return (
         <div className="border rounded-lg p-4 mb-4">
