@@ -4,29 +4,42 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Wishlist from "../pages/Wishlist";
 import AllBooksPage from "../pages/AllBooks";
+import BookDetailsPage from "../pages/BookDetailsPage";
+import AddNewBookPage from "../pages/AddBook";
+import EditBookPage from "../pages/EditBookPage";
 
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: '/',
         element: <LandingPage />,
     },
     {
-        path: "/login",
+        path: '/login',
         element: <Login />,
     },
     {
-        path: "/signup",
+        path: '/signup',
         element: <Signup />,
     },
     {
-        path: "/wishlist",
+        path: '/wishlist',
         element: <Wishlist />,
-
     },
     {
-        path: "/all-books",
+        path: '/all-books',
         element: <AllBooksPage />,
-
+    },
+    {
+        path: '/book-details/:bookId',
+        element: <BookDetailsPage />,
+    },
+    {
+        path: '/add-new-book',
+        element: <AddNewBookPage />,
+    },
+    {
+        path: '/edit-book/:bookId',
+        element: <EditBookPage />,
     },
 ]);
 
