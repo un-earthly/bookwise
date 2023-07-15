@@ -15,7 +15,6 @@ const UserLayout = ({ children }: any) => {
                         </label>
                     </div>
                     <div className="flex-1 px-2 mx-2">Navbar Title</div>
-                    <input type="text" placeholder="Type here" className="input  hidden lg:block input-bordered input-primary w-full max-w-xs" />
                     <div className="flex-none hidden lg:block">
                         <ul className="menu menu-horizontal">
                             {/* Navbar menu content here */}
@@ -32,7 +31,6 @@ const UserLayout = ({ children }: any) => {
                     {/* Sidebar content here */}
                     <li><a>Sidebar Item 1</a></li>
                     <li><a>Sidebar Item 2</a></li>
-                    <input type="text" placeholder="Type here" className="input input-bordered input-primary w-full max-w-xs" />
 
 
                 </ul>

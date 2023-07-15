@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import Wishlist from "../pages/Wishlist";
 
 const router = createBrowserRouter([
     {
@@ -15,7 +16,12 @@ const router = createBrowserRouter([
     {
         path: "/signup",
         element: <Signup />,
-    }
+    },
+    {
+        path: "/wishlist",
+        element: <Wishlist />,
+
+    },
 ]);
 
 export default router
