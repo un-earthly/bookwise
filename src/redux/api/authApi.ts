@@ -1,15 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { UserURL } from './urls';
-export interface User {
-    email: string
-    password: string
-}
-export interface NewUser {
-    username: string,
-    email: string
-    password: string,
-    contact: string
-}
+import { NewUser,User } from '../../interface/user.interface';
+
 
 export const authApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: UserURL }),
