@@ -1,46 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { IBook } from '../interface/book.interface';
+import React, { useState } from 'react';
+import { useGetAllBooksQuery } from '../redux/api/bookApi';
+
 import BookCard from '../components/BookCard';
 import UserLayout from '../layouts/UserLayout';
 
 const AllBooksPage: React.FC = () => {
-    const [books, setBooks] = useState<IBook[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredBooks, setFilteredBooks] = useState<IBook[]>([]);
-    const [genreFilter, setGenreFilter] = useState('');
-    const [publicationYearFilter, setPublicationYearFilter] = useState('');
+    const [genreFilter, setGenreFilter] = useState<string | null>(null);
+    const [publicationYearFilter, setPublicationYearFilter] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fakeBooks: IBook[] = [
-            { _id: "1", title: 'Book 1', author: 'Author 1', genre: 'Fiction', publicationDate: '2022-01-01' },
-            { _id: "2", title: 'Book 2', author: 'Author 2', genre: 'Non-Fiction', publicationDate: '2021-12-31' },
-        ];
-        setBooks(fakeBooks);
-        setFilteredBooks(fakeBooks);
-    }, []);
+    const searchParams = searchTerm ? searchTerm : undefined;
+    const filterParams = {
+        genre: genreFilter || undefined,
+        year: publicationYearFilter ? parseInt(publicationYearFilter) : undefined,
+    };
 
-    useEffect(() => {
-        let filtered = books;
-
-        if (searchTerm) {
-            filtered = filtered.filter((book) =>
-                book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.author.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-
-        if (genreFilter) {
-            filtered = filtered.filter((book) => book.genre === genreFilter);
-        }
-
-        if (publicationYearFilter) {
-            filtered = filtered.filter((book) =>
-                new Date(book.publicationDate).getFullYear().toString() === publicationYearFilter
-            );
-        }
-
-        setFilteredBooks(filtered);
-    }, [searchTerm, genreFilter, publicationYearFilter, books]);
+    const { data: books, isLoading, isError } = useGetAllBooksQuery({
+        q: searchParams,
+        ...filterParams,
+        limit: 10,
+        page: 1,
+    });
 
     return (
         <UserLayout>
@@ -56,8 +36,8 @@ const AllBooksPage: React.FC = () => {
                     />
 
                     <select
-                        value={genreFilter}
-                        onChange={(e) => setGenreFilter(e.target.value)}
+                        value={genreFilter || ''}
+                        onChange={(e) => setGenreFilter(e.target.value || null)}
                         className="select"
                     >
                         <option value="">All Genres</option>
@@ -66,8 +46,8 @@ const AllBooksPage: React.FC = () => {
                     </select>
 
                     <select
-                        value={publicationYearFilter}
-                        onChange={(e) => setPublicationYearFilter(e.target.value)}
+                        value={publicationYearFilter || ''}
+                        onChange={(e) => setPublicationYearFilter(e.target.value || null)}
                         className="select"
                     >
                         <option value="">All Years</option>
@@ -76,9 +56,17 @@ const AllBooksPage: React.FC = () => {
                     </select>
                 </div>
 
-                <ul className="space-y-4">
-                    {filteredBooks.map((book) => <BookCard book={book} key={book._id} />)}
-                </ul>
+                {isLoading ? (
+                    <div>Loading...</div>
+                ) : isError ? (
+                    <div>Error occurred while fetching books.</div>
+                ) : (
+                    <ul className="space-y-4">
+                        {books && books.length > 1 ? books?.map((book) => (
+                            <BookCard book={book} key={book._id} />
+                        )) : "No Book Available"}
+                    </ul>
+                )}
             </div>
         </UserLayout>
     );

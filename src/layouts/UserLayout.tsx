@@ -37,7 +37,7 @@ const UserLayout = ({ children }: {
                             </svg>
                         </label>
                     </div>
-                    <div className="flex-1 px-2 mx-2 lg:text-xl  font-semibold"><Link to={"/"}>bookwise</Link></div>
+                    <div className="flex-1 px-2 mx-2 lg:text-xl font-semibold"><Link to={"/"}>bookwise</Link></div>
                     <div className="navbar-end hidden lg:block">
                         <ul className="menu menu-horizontal">
                             {navigationLinks.map((link) => (

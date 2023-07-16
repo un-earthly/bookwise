@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IBook } from '../interface/book.interface';
+import { useCreateBookMutation } from '../redux/api/bookApi';
+
 const AddNewBookPage: React.FC = () => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -9,10 +11,17 @@ const AddNewBookPage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const handleAddBook = () => {
-        const newBook: IBook = { title, author, genre, publicationDate };
-        console.log('Adding new book:', newBook);
-        navigate('/all-books');
+    const [createBook, { isLoading }] = useCreateBookMutation();
+
+    const handleAddBook = async () => {
+        try {
+            const newBook: IBook = { title, author, genre, publicationDate };
+            const response = await createBook(newBook);
+            console.log('Adding new book:', response);
+            navigate('/all-books');
+        } catch (error) {
+            console.error('Error adding new book:', error);
+        }
     };
 
     return (
@@ -51,8 +60,8 @@ const AddNewBookPage: React.FC = () => {
                     onChange={(e) => setPublicationDate(e.target.value)}
                 />
 
-                <button className="btn btn-primary" onClick={handleAddBook}>
-                    Add Book
+                <button className="btn btn-primary" onClick={handleAddBook} disabled={isLoading}>
+                    {isLoading ? 'Adding...' : 'Add Book'}
                 </button>
             </div>
         </div>

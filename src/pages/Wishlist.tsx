@@ -1,42 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { IBook } from '../interface/book.interface';
 import UserLayout from '../layouts/UserLayout';
 import BookCard from '../components/BookCard';
+import { useGetWishlistQuery } from '../redux/api/wishlistApi';
 
 const Wishlist: React.FC = () => {
-    const [wishlist, setWishlist] = useState<IBook[]>([]);
+    const { data: wishlist, isLoading, isError } = useGetWishlistQuery();
 
-    useEffect(() => {
-        const fakeWishlist: IBook[] = [
-            {
-                _id: "1",
-                title: 'Book 1',
-                author: 'Author 1',
-                genre: 'Fiction',
-                publicationDate: '2022-01-01'
-            },
-            {
-                _id: "2",
-                title: 'Book 2',
-                author: 'Author 2',
-                genre: 'Non-Fiction',
-                publicationDate: '2021-12-31'
-            },
-        ];
-        setWishlist(fakeWishlist);
-    }, []);
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return <div>Error occurred while fetching wishlist.</div>;
+    }
 
     return (
         <UserLayout>
-
             <div className="p-4">
                 <h1 className="text-2xl font-bold mb-4">My Wishlist</h1>
-                <ul className="space-y-4">
-                    {wishlist.map((book) => <BookCard book={book} key={book._id} />)}
-                </ul>
+                {wishlist && wishlist?.length > 0 ? (
+                    <ul className="space-y-4">
+                        {wishlist.map((book: IBook) => (
+                            <BookCard book={book} key={book._id} />
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No books in the wishlist.</p>
+                )}
             </div>
-        </UserLayout >
-
+        </UserLayout>
     );
 };
 

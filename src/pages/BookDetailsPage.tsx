@@ -1,34 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IBook } from '../interface/book.interface';
+import { useDeleteBookMutation, useGetBookByIdQuery } from '../redux/api/bookApi';
 
 const BookDetailsPage: React.FC = () => {
     const { bookId } = useParams<{ bookId: string }>();
-    const [book, setBook] = useState<IBook | null>(null);
     const navigate = useNavigate();
+    const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
 
-    useEffect(() => {
-        const fakeBook: IBook = {
-            title: 'Book Title',
-            author: 'Author Name',
-            genre: 'Fiction',
-            publicationDate: '2022-01-01',
-        };
-        setBook(fakeBook);
-    }, [bookId]);
+    const { data: book, isLoading, isError } = useGetBookByIdQuery(String(bookId));
 
     const handleEditBook = () => {
         navigate(`/edit-book/${bookId}`);
     };
 
-    const handleDeleteBook = () => {
-        console.log('Deleting book:', bookId);
+    const handleDeleteBook = async () => {
+        if (!book) {
+            return;
+        }
 
-        navigate('/all-books');
+        try {
+            await deleteBook(book._id);
+            navigate('/all-books');
+        } catch (error) {
+            console.error('Error deleting book:', error);
+        }
     };
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return <div>Error occurred while fetching book details.</div>;
+    }
 
     if (!book) {
-        return <div>Loading...</div>;
+        return <div>Book not found.</div>;
     }
 
     return (
@@ -44,8 +50,8 @@ const BookDetailsPage: React.FC = () => {
                     <button className="btn btn-primary" onClick={handleEditBook}>
                         Edit Book
                     </button>
-                    <button className="btn btn-error" onClick={handleDeleteBook}>
-                        Delete Book
+                    <button className="btn btn-error" onClick={handleDeleteBook} disabled={isDeleting}>
+                        {isDeleting ? 'Deleting...' : 'Delete Book'}
                     </button>
                 </div>
             </div>

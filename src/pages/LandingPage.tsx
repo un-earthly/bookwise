@@ -1,18 +1,37 @@
-import UserLayout from '../layouts/UserLayout'
+import BookCard from '../components/BookCard';
+import Footer from '../components/Footer';
+import { IBook } from '../interface/book.interface';
+import UserLayout from '../layouts/UserLayout';
+import { useGetAllBooksQuery } from '../redux/api/bookApi';
 
 export default function LandingPage() {
+  const { data, isLoading, isError } = useGetAllBooksQuery({ limit: 10, page: 1 });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error occurred while fetching books.</div>;
+  }
+
   return (
     <UserLayout>
-      <div className="hero min-h-screen bg-base-200">
-        <div className="hero-content flex-col lg:flex-row">
-          <img src="/images/stock/photo-1635805737707-575885ab0820.jpg" className="max-w-sm rounded-lg shadow-2xl" />
-          <div>
-            <h1 className="text-5xl font-bold">Box Office News!</h1>
-            <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-            <button className="btn btn-primary">Get Started</button>
-          </div>
-        </div>
+      <div>
+        <h2>Top 10 Recently Added Books</h2>
+        {data && data.length > 0 ? (
+          <ul>
+            {data
+              ?.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime())
+              .map((book:IBook) => (
+                <BookCard key={book._id} book={book} />
+              ))}
+          </ul>
+        ) : (
+          <p>No books available.</p>
+        )}
       </div>
+      <Footer />
     </UserLayout>
-  )
+  );
 }

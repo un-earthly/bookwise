@@ -4,4 +4,6 @@ export interface IBook {
     author: string;
     genre: string;
     publicationDate: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
