@@ -1,9 +1,15 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-
+import { logoutUser } from '../redux/features/AuthSlice';
+import { useDispatch } from 'react-redux';
 const UserLayout = ({ children }: {
     children: ReactNode
 }) => {
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        dispatch(logoutUser());
+    };
+
     return (
         <div className="drawer">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -38,7 +44,7 @@ const UserLayout = ({ children }: {
 
                         </ul>
                     </div>
-                    <div className="navbar-end hidden lg:block">
+                    <div className="navbar-end hidden lg:flex">
                         <a className="btn">Button</a>
                     </div>
                 </div>

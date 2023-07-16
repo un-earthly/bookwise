@@ -1,11 +1,28 @@
 import { useState } from 'react';
+import { useLoginUserMutation } from '../redux/api/authApi';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        console.log('Logging in user:', email, password);
+    // Destructure the mutation function and its status values
+    const [loginUser, { isLoading, isError }] = useLoginUserMutation();
+
+    const handleLogin = async () => {
+        try {
+            const response = await loginUser({ email, password });
+
+            if ('data' in response && response.data) {
+                // Handle successful login (data contains the response data)
+                console.log('Logged in user:', response.data.email);
+
+                // You can perform any additional actions after successful login, such as redirecting the user to another page.
+            }
+        } catch (error) {
+            // Handle login error
+            console.error('Login failed:', error);
+
+        }
     };
 
     return (
@@ -43,10 +60,12 @@ export default function Login() {
                         </label>
                     </div>
                     <div className="form-control mt-6">
-                        <button className="btn btn-primary" onClick={handleLogin}>
-                            Login
+                        {/* Disable the button during API call */}
+                        <button className="btn btn-primary" onClick={handleLogin} disabled={isLoading}>
+                            {isLoading ? 'Logging in...' : 'Login'}
                         </button>
                     </div>
+                    {isError && <p className="text-red-500 mt-2">Login failed. Please try again.</p>}
                 </div>
             </div>
         </div>
