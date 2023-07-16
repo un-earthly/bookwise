@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../redux/features/AuthSlice';
 import { useDispatch } from 'react-redux';
+import { getUserFromLocalStorage } from '../utils/localstorage';
 const UserLayout = ({ children }: {
     children: ReactNode
 }) => {
@@ -9,7 +10,11 @@ const UserLayout = ({ children }: {
     const handleLogout = () => {
         dispatch(logoutUser());
     };
-
+    const navigationLinks = [
+        { text: 'Wishlist', url: '/wishlist' },
+        { text: 'All Books', url: '/all-books' },
+    ];
+    const user = getUserFromLocalStorage();
     return (
         <div className="drawer">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -32,20 +37,20 @@ const UserLayout = ({ children }: {
                             </svg>
                         </label>
                     </div>
-                    <div className="flex-1 px-2 mx-2 lg:text-xl font-semibold"><Link to={"/"}>bookwise</Link></div>
+                    <div className="flex-1 px-2 mx-2 lg:text-xl  font-semibold"><Link to={"/"}>bookwise</Link></div>
                     <div className="navbar-end hidden lg:block">
                         <ul className="menu menu-horizontal">
-                            <li>
-                                <Link to="/wishlist">Wishlist</Link>
-                            </li>
-                            <li>
-                                <Link to="/all-books">All Books</Link>
-                            </li>
-
+                            {navigationLinks.map((link) => (
+                                <li key={link.url}>
+                                    <Link to={link.url}>{link.text}</Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <div className="navbar-end hidden lg:flex">
-                        <a className="btn">Button</a>
+                        {user ? <a onClick={handleLogout} className="btn">Logout</a> : <Link to="/login" className="btn btn-accent ">
+                            Login
+                        </Link>}
                     </div>
                 </div>
                 {children}
@@ -61,7 +66,7 @@ const UserLayout = ({ children }: {
                         <Link to="/all-books">All Books</Link>
                     </li>
 
-                    <a className="btn btn-outline">Button</a>
+                    <a onClick={handleLogout} className="btn btn-outline">Logout</a>
                 </ul>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRegisterUserMutation } from '../redux/api/authApi';
-import { saveUserToLocalStorage } from '../utils/localstorager';
+import { saveUserToLocalStorage } from '../utils/localstorage';
 import Input from '../components/Input';
 import { showErrorToast, showSuccessToast } from '../utils/toast';
 
