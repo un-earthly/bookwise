@@ -22,6 +22,13 @@ export const authApi = createApi({
                 body: { ...data, email },
             }),
         }),
+        registerUser: builder.mutation<NewUser, Partial<NewUser> & Pick<NewUser, 'email'>>({
+            query: ({ email, ...data }) => ({
+                url: "/register",
+                method: 'POST',
+                body: { ...data, email },
+            }),
+        })
     })
 })
 // export const authApi = createApi({
