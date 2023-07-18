@@ -6,7 +6,7 @@ import { useGetAllBooksQuery } from '../redux/api/bookApi';
 import { useState, useEffect } from "react"
 
 export default function LandingPage() {
-  const { data, isLoading, isError } = useGetAllBooksQuery({ limit: 10, page: 1 });
+  const { data, isLoading, isError } = useGetAllBooksQuery(undefined);
   const [sortedBooks, setSortedBooks] = useState<IBook[]>([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function LandingPage() {
           <div>Error occurred while fetching books.</div>
         ) : data && data.data.length > 0 ? (
           <ul>
-                {sortedBooks.map((book: IBook) => (
+            {sortedBooks.map((book: IBook) => (
               <BookCard key={book._id} book={book} />
             ))}
           </ul>
