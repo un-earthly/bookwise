@@ -3,13 +3,14 @@ import { useLoginUserMutation } from '../redux/api/authApi';
 import { saveUserToLocalStorage } from '../utils/localstorage';
 import { showErrorToast, showSuccessToast } from '../utils/toast';
 import Input from '../components/Input';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [loginUser, { isLoading, isError }] = useLoginUserMutation();
-
+    const navigate = useNavigate()
     const handleLogin = async () => {
         try {
             const response = await loginUser({ email, password });
@@ -18,6 +19,7 @@ export default function Login() {
                 console.log('Registered user:', response.data);
                 saveUserToLocalStorage(response.data);
 
+                navigate("/")
 
                 showSuccessToast('Logged in successfully!');
 
@@ -36,26 +38,31 @@ export default function Login() {
             <div className="flex-shrink-0 max-w-xl w-full shadow-2xl bg-base-100">
                 <div className="card-body">
                     <Input
-                        label="Email"
                         type="text"
-                        placeholder="email"
+                        placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <Input
-                        label="Password"
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <label className="label">
-                        <a href="#" className="label-text-alt link link-hover">
-                            Forgot password?
-                        </a>
-                    </label>
+                    <div className='flex items-center justify-between'>
+                        <label className="label">
+                            <a href="#" className="label-text-alt link link-hover">
+                                New Here, <Link to="/signup">Register Now</Link>
+                            </a>
+                        </label>
+                        <label className="label">
+                            <a href="#" className="label-text-alt link link-hover">
+                                Show Password
+                            </a>
+                        </label>
+                    </div>
                     <div className="form-control mt-6">
-                        <button className="btn btn-primary" onClick={handleLogin} disabled={isLoading}>
+                        <button className="btn btn-accent" onClick={handleLogin} disabled={isLoading}>
                             {isLoading ? 'Logging in...' : 'Login'}
                         </button>
                     </div>

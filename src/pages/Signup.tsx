@@ -3,6 +3,7 @@ import { useRegisterUserMutation } from '../redux/api/authApi';
 import { saveUserToLocalStorage } from '../utils/localstorage';
 import Input from '../components/Input';
 import { showErrorToast, showSuccessToast } from '../utils/toast';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -11,15 +12,14 @@ export default function Register() {
     const [contact, setContact] = useState('');
 
     const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
-
+    const navigate = useNavigate()
     const handleRegister = async () => {
         try {
             const response = await registerUser({ username, email, password, contact });
 
             if ('data' in response && response.data) {
-                console.log('Registered user:', response.data);
                 saveUserToLocalStorage(response.data);
-
+                navigate("/")
                 showSuccessToast("User registered successfully")
             }
         } catch (error) {
@@ -35,35 +35,36 @@ export default function Register() {
             <div className="flex-shrink-0 max-w-xl w-full shadow-2xl bg-base-100">
                 <div className="card-body">
                     <Input
-                        label="Username"
                         type="text"
-                        placeholder="username"
+                        placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                     <Input
-                        label="Email"
                         type="text"
-                        placeholder="email"
+                        placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <Input
-                        label="Password"
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <Input
-                        label="Contact"
                         type="text"
-                        placeholder="contact"
+                        placeholder="Contact"
                         value={contact}
                         onChange={(e) => setContact(e.target.value)}
                     />
+                    <label className="label">
+                        <a href="#" className="label-text-alt link link-hover">
+                            Already Here, <Link to="/login">Login Now...</Link>
+                        </a>
+                    </label>
                     <div className="form-control mt-6">
-                        <button className="btn btn-primary" onClick={handleRegister} disabled={isLoading}>
+                        <button className="btn btn-accent" onClick={handleRegister} disabled={isLoading}>
                             {isLoading ? 'Registering...' : 'Register'}
                         </button>
                     </div>

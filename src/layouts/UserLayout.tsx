@@ -13,6 +13,7 @@ const UserLayout = ({ children }: {
     const navigationLinks = [
         { text: 'Wishlist', url: '/wishlist' },
         { text: 'All Books', url: '/all-books' },
+        { text: 'Add New Book', url: '/add-new-book' },
     ];
     const user = getUserFromLocalStorage();
     return (
@@ -59,12 +60,11 @@ const UserLayout = ({ children }: {
                 <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
                 <ul className="menu p-4 w-80 h-full bg-base-200">
 
-                    <li>
-                        <Link to="/wishlist">Wishlist</Link>
-                    </li>
-                    <li>
-                        <Link to="/all-books">All Books</Link>
-                    </li>
+                    {navigationLinks.map((link) => (
+                        <li key={link.url}>
+                            <Link to={link.url}>{link.text}</Link>
+                        </li>
+                    ))}
 
                     <a onClick={handleLogout} className="btn btn-outline">Logout</a>
                 </ul>

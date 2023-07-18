@@ -1,17 +1,18 @@
 import React, { ChangeEvent } from 'react';
 
 interface InputProps {
-    label: string;
-    type: string;
+    type: any;
     placeholder: string;
-    value: string;
+    value: any;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    min?: any,
+    max?: any;
 }
 
-const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange }) => (
+const Input: React.FC<InputProps> = ({ type, placeholder, value, onChange, min, max }) => (
     <div className="form-control">
         <label className="label">
-            <span className="label-text">{label}</span>
+            <span className="label-text">{placeholder}</span>
         </label>
         <input
             type={type}
@@ -19,6 +20,9 @@ const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange
             className="input input-bordered"
             value={value}
             onChange={onChange}
+            min={min}
+            max={max}
+            required={true}
         />
     </div>
 );
